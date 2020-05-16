@@ -4,12 +4,12 @@ class Student
 
     attr_accessor :name, :grade
     attr_reader :id
+    
 
-    def initialize(name,grade,id = nil)
+    def initialize(id = nil,name,grade)
       @id = id
       @name = name 
       @grade = grade
-
     end
 
     def self.create_table
@@ -42,17 +42,16 @@ class Student
     end
 
     def self.create(name,grade)
-      student = self.(name,grade)
+      student = self.new(name,grade)
       student.save
       student
     end
 
     def self.new_from_db(row)
-      new_student = self.new 
-      new_student.id = row[0]
-      new_student.name = row[1]
-      new_student.length = row[2]
-      new_student
+      id = row[0]
+      name = row[1]
+      grade = row[2]
+      self.new(id, name, grade)
     end
 
 
@@ -63,7 +62,7 @@ class Student
         WHERE name = ?
         LIMIT 1
       SQL
-      DB[:conn].execute(sql,namet).map do |row|
+      DB[:conn].execute(sql,name).map do |row|
         self.new_from_db(row)
       end.first
     end
