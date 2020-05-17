@@ -1,8 +1,8 @@
 require_relative "../config/environment.rb"
 
 class Student
-  attr_accessor :name, :grade
-  attr_reader :id
+  attr_accessor :name, :grade, :id
+ 
 
   def initialize(id = nil, name, grade)
     @id = id
@@ -32,12 +32,13 @@ class Student
     if self.id
       self.update
     else
-    sql = <<-SQL
-    INSERT INTO students (name, grade) 
-    VALUES (?, ?)
-    SQL
-
-    DB[:conn].execute(sql, self.name, self.grade)
+      sql = <<-SQL
+      INSERT INTO students (name, grade)
+      VALUES (?, ?)
+      SQL
+  
+      DB[:conn].execute(sql, self.name, self.grade)
+      @id = DB[:conn].execute("SELECT last_insert_rowid() FROM students")[0][0]
   end
   end
 
@@ -61,9 +62,11 @@ class Student
     WHERE name = ?
     LIMIT 1
     SQL
-
-    data = DB[:conn].execute(sql, name)
-    self.new_from_db(data)
+    DB[:conn].execute(sql,name).map do |row|
+      self.new_from_db(row)
+    end.first
+    # data = DB[:conn].execute(sql, name)
+    # self.new_from_db(data)
    
   end
 
