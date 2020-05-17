@@ -38,7 +38,7 @@ class Student
     SQL
 
     DB[:conn].execute(sql, self.name, self.grade)
-    end
+  end
   end
 
   def self.create(name, grade)
@@ -63,7 +63,7 @@ class Student
     SQL
 
     data = DB[:conn].execute(sql, name)
-    new_from_db(data)
+    self.new_from_db(data)
    
   end
 
