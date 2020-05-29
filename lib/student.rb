@@ -8,9 +8,10 @@ class Student
   attr_accessor :name, :grade
   attr_reader :id
 
-  def initialize(name, grade)
+  def initialize(name, grade, id = nil)
     @name = name
     @grade = grade
+    @id = id
   end
 
   def self.create_table
@@ -57,8 +58,13 @@ class Student
   def self.find_by_name(name)
     sql = "SELECT * FROM students WHERE name = ?"
     result = DB[:conn].execute(sql, name).first
-    Student.new(result)
+    self.new(result[1],result[2],result[0])
   end
+
+  def update 
+    sql = "UPDATE students SET name = ?, grade = ?"
+    DB[:conn].execute(sql, self.name, self.grade)
+  end 
 
 
 end
