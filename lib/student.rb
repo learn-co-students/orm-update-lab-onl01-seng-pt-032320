@@ -73,5 +73,3 @@ class Student
       DB[:conn].execute(sql_command, self.name, self.grade, self.id)
   end
 end
-
-#To clarify, I am not working on Tic Tac Toe, my account was paused because payment hasn't been received yet, even though it has been withdrawn from my bank account already.... So I am continuing while this stuff gets resolved by tomorrow
