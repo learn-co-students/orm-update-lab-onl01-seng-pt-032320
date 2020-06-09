@@ -67,7 +67,8 @@ class Student
   end
   
   def update
-    sql = "UPDATE students SET name = ?, grade = ? WHERE id = ?"
+    sql = "UPDATE students SET name = ?, grade = ? WHERE id = ?" #creates sql variable that Updates students table, makes name = (inserted), grade = (inserted) for the student at the id requested/input
     DB[:conn].execute(sql, self.name, self.grade, self.id)
+    #executes the sql variable we just set, gets the input name and grade (to be inserted/update the table with) and the id for the student requested so it knows which student to update
   end
 end
