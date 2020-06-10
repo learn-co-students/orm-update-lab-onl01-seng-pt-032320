@@ -1,4 +1,5 @@
 require_relative "../config/environment.rb"
+require 'pry'
 
 class Student
 attr_accessor :name, :grade
@@ -47,25 +48,24 @@ def update
   DB[:conn].execute(sql, self.name, self.grade, self.id)
 end
 
-def self.create
+def self.create(name, grade)
   student = self.new(name, grade)
   student.save
   student
 end
 
-def self.new_from_db
-end
-
-def self.find_by_name
+def self.find_by_name(name_to_find)
+  sql = <<-SQL
+  SELECT * FROM students WHERE name = ?
+  SQL
+  DB[:conn].execute(sql, name_to_find).map do |row|
+    self.new_from_db(row)
+  end.first
 end
 
 def self.new_from_db(row)
-student = self.new
-student.id = row[0]
-student.name = row[1]
-student.grade = row[3]
+student = self.new(row[1],row[2], row[0])
 student 
-
 end
 
 
